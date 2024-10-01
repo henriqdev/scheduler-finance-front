@@ -2,7 +2,8 @@
 import { ExtractFinance } from "src/interfaces/models";
 import { onMounted, ref } from "vue";
 import ApiService from "src/services/api.service";
-import { date } from 'quasar';
+import {date, useQuasar} from 'quasar';
+const $q = useQuasar()
 
 interface Column {
   name: string;
@@ -43,6 +44,9 @@ onMounted(async () => {
 
 async function fetchFinanceData() {
   try {
+    $q.loading.show({
+      delay: 400 // ms
+    });
     const response = await ApiService.get<ExtractFinance[]>('/transferencias');
     rows.value = response.data.map((value) => {
       const valorFinal = (value.valor || 0) - value.taxa;
@@ -59,6 +63,8 @@ async function fetchFinanceData() {
     });
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
+  } finally {
+    $q.loading.hide();
   }
 }
 
