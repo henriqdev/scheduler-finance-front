@@ -95,22 +95,16 @@ async function sendRequest(input: CreateSchedulerFinance) {
     })
     const response = await ApiService.post('/transferencias', input);
     console.info(response)
-  } catch (error) {
-    console.error('Erro ao inserir agendamento:', error);
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: 'Erro ao inserir agendamento'
-    })
-  } finally {
-    $q.loading.hide()
     $q.notify({
       color: 'green-4',
       textColor: 'white',
       icon: 'cloud_done',
       message: 'Agendado'
     })
+  } catch (error) {
+    console.error('Erro ao inserir agendamento:', error);
+  } finally {
+    $q.loading.hide()
   }
 }
 
